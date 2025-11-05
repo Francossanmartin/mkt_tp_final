@@ -17,4 +17,3 @@ fact_shipment
 ![fact_shipment](./assets/tp%20marketing%205.jpg)
 fact_web_session
 ![fact_web_session](./assets/tp%20marketing%206.jpg)
-
