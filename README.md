@@ -7,14 +7,19 @@ Repositorio del trabajo práctico final de la materia.
 
 fact_nps_response
 ![fact_nps_response](./assets/tp%20marketing%201.jpg)
+
 fact_order
 ![fact_order](./assets/tp%20marketing%202.jpg)
+
 fact_payment
 ![fact_payment](./assets/tp%20marketing%203.jpg)
+
 fact_sales_order_item
 ![fact_sales_order_item](./assets/tp%20marketing%204.jpg)
+
 fact_shipment
 ![fact_shipment](./assets/tp%20marketing%205.jpg)
+
 fact_web_session
 ![fact_web_session](./assets/tp%20marketing%206.jpg)
 
