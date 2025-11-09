@@ -45,7 +45,7 @@ DISTINCTCOUNT('fact_web_session'[customer_sk])
 ---
 ### NPS
 
-
+```dax
 NPS = 
 VAR TotalRespuestas =
     COUNT ( 'fact_nps_response'[score] )
