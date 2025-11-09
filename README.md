@@ -27,3 +27,40 @@ Creamos 6 esquemas estrella, Cada proceso de negocio tiene su diagrama.
 
 ### fact_web_session
 ![fact_web_session](./assets/tp%20marketing%206.jpg)
+
+
+
+## DAX
+
+Las medidas utilizadas para llevar a cabo este analisis
+
+
+### Usuarios Activos
+
+
+```dax
+Usuarios Activos = 
+DISTINCTCOUNT('fact_web_session'[customer_sk])
+```
+---
+### NPS
+
+
+(Porcentaje de Promotores − Porcentaje de Detractores) × 100
+```dax
+NPS = 
+VAR TotalRespuestas =
+    COUNT ( 'fact_nps_response'[score] )
+VAR Promotores =
+    CALCULATE (
+        COUNT ( 'fact_nps_response'[score] ),
+        'fact_nps_response'[score] >= 9
+    )
+VAR Detractores =
+    CALCULATE (
+        COUNT ( 'fact_nps_response'[score] ),
+        'fact_nps_response'[score] <= 6
+    )
+RETURN
+    DIVIDE ( ( Promotores - Detractores ), TotalRespuestas ) * 100
+```
