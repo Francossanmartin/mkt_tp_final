@@ -46,8 +46,6 @@ DISTINCTCOUNT('fact_web_session'[customer_sk])
 ### NPS
 
 
-(Porcentaje de Promotores − Porcentaje de Detractores) × 100
-```dax
 NPS = 
 VAR TotalRespuestas =
     COUNT ( 'fact_nps_response'[score] )
