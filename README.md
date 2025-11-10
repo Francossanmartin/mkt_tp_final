@@ -97,4 +97,5 @@ CALCULATE(
 )
 ```
 ## DASHBOARD
-Link [Dashboard](
+(<img width="878" height="496" alt="image" src="https://github.com/user-attachments/assets/1cc18163-612f-4f17-82b3-ccbb7dabaa30" />)
+
