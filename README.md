@@ -68,3 +68,31 @@ VAR Detractores =
 RETURN
     DIVIDE ( ( Promotores - Detractores ), TotalRespuestas ) * 100
 ```
+
+### Ticket Promedio
+
+```dax
+Ticket Promedio = 
+DIVIDE(
+    CALCULATE(
+        SUM(fact_order[total_amount]),
+        fact_order[status] IN { "PAID", "FULFILLED" }
+
+
+    ),
+    CALCULATE(
+        COUNTROWS(fact_order),
+        fact_order[status] IN { "PAID", "FULFILLED" }
+    )
+)
+```
+
+### Ventas Totales
+
+```dax
+Ventas Totales  = 
+CALCULATE(
+    SUM(fact_order[total_amount]),
+    fact_sales_order_item
+)
+```
