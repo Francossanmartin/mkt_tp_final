@@ -11,7 +11,7 @@ El paquete fue creado por
 [Franco San Martin](https://github.com/Francossanmartin)
 
 
-## Dimensiones
+## Dim
 ### dim_channel
 
 | **Campo**  | **Tipo** | **Clave** | **Descripción**                              |
@@ -88,6 +88,74 @@ El paquete fue creado por
 | country_code     | STRING   |           | Código del país en formato ISO (ej. AR, US, etc.).     |
 | status           | STRING   |           | Estado de la tienda (A = Activa, I = Inactiva).        |
 | created_at_store | DATETIME |           | Fecha y hora de creación o registro de la tienda.      |
+
+## Fact
+### fact_nps_response
+| **Campo**         | **Tipo** | **Clave** | **Descripción**                                                       |
+| ----------------- | -------- | --------- | --------------------------------------------------------------------- |
+| nps_bk            | BIGINT   | BK        | Clave de negocio (ID único de la respuesta NPS).                      |
+| customer_sk       | INT      | FK        | Clave foránea que referencia a la dimensión cliente (`dim_customer`). |
+| channel_sk        | INT      | FK        | Clave foránea que referencia a la dimensión canal (`dim_channel`).    |
+| responded_date_sk | INT      | FK        | Clave foránea que referencia a la dimensión fecha (`dim_date`).       |
+| score             | INT      |           | Puntuación NPS dada por el cliente (0 a 10).                          |
+| comment           | STRING   |           | Comentario opcional dejado por el cliente.                            |
+
+### fact_order
+| **Campo**       | **Tipo** | **Clave** | **Descripción**                                                       |
+| --------------- | -------- | --------- | --------------------------------------------------------------------- |
+| order_bk        | BIGINT   | BK        | Clave de negocio (ID único del pedido).                               |
+| customer_sk     | INT      | FK        | Clave foránea que referencia a la dimensión cliente (`dim_customer`). |
+| store_sk        | INT      | FK        | Clave foránea que referencia a la dimensión tienda (`dim_store`).     |
+| channel_sk      | INT      | FK        | Clave foránea que referencia a la dimensión canal (`dim_channel`).    |
+| order_date_sk   | INT      | FK        | Clave foránea que referencia a la dimensión fecha (`dim_date`).       |
+| subtotal_amount | FLOAT    |           | Monto subtotal del pedido (sin descuentos ni envíos).                 |
+| shipping_fee    | FLOAT    |           | Costo del envío asociado al pedido.                                   |
+| discount_amount | FLOAT    |           | Monto total de descuentos aplicados.                                  |
+| total_amount    | FLOAT    |           | Total final del pedido (subtotal + envío - descuentos).               |
+| currency_code   | STRING   |           | Código de la moneda utilizada (ej. ARS, USD).                         |
+| status          | STRING   |           | Estado del pedido (ej. CREATED, PAID, FULFILLED, CANCELLED, etc.).    |
+
+### fact_payment
+| **Campo**       | **Tipo** | **Clave** | **Descripción**                                                    |
+| --------------- | -------- | --------- | ------------------------------------------------------------------ |
+| order_bk        | BIGINT   | FK        | Clave foránea que referencia al pedido en `fact_order`.            |
+| paid_date_sk    | INT      | FK        | Clave foránea que referencia a la fecha de pago en `dim_date`.     |
+| status          | STRING   |           | Estado del pago (ej. PAID, PENDING, FAILED, CANCELLED).            |
+| payment_method  | STRING   |           | Método de pago utilizado (tarjeta, transferencia, efectivo, etc.). |
+| amount          | FLOAT    |           | Monto pagado por el cliente.                                       |
+| transaction_ref | STRING   |           | Referencia o identificador único de la transacción.                |
+
+### fact_sales_order_item
+| **Campo**          | **Tipo** | **Clave** | **Descripción**                                                   |
+| ------------------ | -------- | --------- | ----------------------------------------------------------------- |
+| fact_order_item_sk | INT      | PK        | Identificador interno del registro de ítem de pedido.             |
+| order_item_bk      | BIGINT   | BK        | Clave de negocio (ID único del ítem del pedido).                  |
+| sales_order_bk     | BIGINT   | FK        | Clave foránea que referencia al pedido principal en `fact_order`. |
+| product_bk         | BIGINT   | FK        | Clave foránea que referencia al producto en `dim_product`.        |
+| quantity           | INT      |           | Cantidad de unidades del producto en el pedido.                   |
+| first_price        | FLOAT    |           | Precio unitario del producto al momento de la venta.              |
+| total_amount       | FLOAT    |           | Monto total del ítem (cantidad × precio unitario).                |
+
+### fact_shipment
+| **Campo**         | **Tipo** | **Clave** | **Descripción**                                                    |
+| ----------------- | -------- | --------- | ------------------------------------------------------------------ |
+| order_bk          | BIGINT   | FK        | Clave foránea que referencia al pedido en `fact_order`.            |
+| carrier           | STRING   |           | Nombre de la empresa encargada del envío.                          |
+| tracking_number   | STRING   |           | Código de seguimiento asignado al envío.                           |
+| shipped_date_sk   | INT      | FK        | Clave foránea que referencia a la fecha de despacho en `dim_date`. |
+| delivered_date_sk | INT      | FK        | Clave foránea que referencia a la fecha de entrega en `dim_date`.  |
+| is_delivered      | BOOLEAN  |           | Indicador de entrega (1 = Entregado, 0 = No entregado).            |
+
+### fact_web_session
+| **Campo**       | **Tipo** | **Clave** | **Descripción**                                                               |
+| --------------- | -------- | --------- | ----------------------------------------------------------------------------- |
+| session_bk      | BIGINT   | BK        | Clave de negocio (ID único de la sesión web).                                 |
+| customer_sk     | INT      | FK        | Clave foránea que referencia al cliente en `dim_customer`.                    |
+| channel_sk      | INT      | FK        | Clave foránea que referencia al canal en `dim_channel`.                       |
+| started_date_sk | INT      | FK        | Clave foránea que referencia a la fecha de inicio de la sesión en `dim_date`. |
+| ended_date_sk   | INT      | FK        | Clave foránea que referencia a la fecha de finalización en `dim_date`.        |
+| device          | STRING   |           | Dispositivo desde el cual se realizó la sesión (ej. mobile, desktop, tablet). |
+| is_ended        | BOOLEAN  |           | Indicador que marca si la sesión finalizó (1 = Sí, 0 = No).                   |
 
 
 ##  Esquema Estrella
